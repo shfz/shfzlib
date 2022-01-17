@@ -173,6 +173,27 @@ sh.http.options("API Name", "/path");
 ```
 > `options(name: string, url: string, config?: AxiosRequestConfig): Promise<AxiosResponse>;`
 
+### Finish http request
+
+You need to call `await sh.http.done();` to aggregate the errors when all http requests are finished.
+
+### Record custom error
+
+You need to call `await sh.http.error("error message");` to record custom errors such as whether the response contains certain characters.
+
+Example) check username is in response
+
+```ts
+import * as c from "cheerio";
+
+...
+
+  let $ = c.load(res.data);
+  if($('p[id="user"]').text() !== username) {
+    await sh.http.error("No username in response");
+  };
+```
+
 ### Charset
 
 - `Charset.ascii()` : `!"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_'abcdefghijklmnopqrstuvwxyz{|}~`
@@ -180,3 +201,60 @@ sh.http.options("API Name", "/path");
 - `Charset.number()` : `0123456789`
 - `Charset.lowercase()` : `abcdefghijklmnopqrstuvwxyz`
 - `Charset.uppercase()` : `ABCDEFGHIJKLMNOPQRSTUVWXYZ`
+
+### Customize
+
+The scenario is written in Javascript and Typescript, any npm package can be installed.
+
+Here's a digest of the recommended npm packages and how to use them.
+
+#### Response body check
+
+```ts
+import * as c from "cheerio";
+
+...
+
+  let res = await sh.http.postForm("login api", "/login", { username, password });
+  let $ = c.load(res.data);
+  if($('p[id="user"]').text() !== username) {
+    await sh.http.error("No username in response");
+  };
+```
+
+#### Generate TOTP
+
+```ts
+import * as c from "cheerio";
+const totp = require("totp-generator");
+
+...
+
+  // get totp_secret by cheerio
+  let res = await sh.http.postForm("register api", "/register", { username, password });
+  let $ = c.load(res.data);
+  let totp_secret = $('p[id="totp"]').text();
+  await sh.http.get("/logout");
+
+  // generate one time password by totp package
+  const one_time_password = totp(totp_secret)
+
+  // login with one time password
+  await sh.http.postForm("login api", "/login", { username, password, totp: one_time_password });
+```
+
+#### CSRF Token
+
+```ts
+import * as c from "cheerio";
+
+...
+
+  // get csrf_token
+  let res = await fl.http.get("register page", "/register");
+  let $ = c.load(res.data);
+  let csrf_token = $('input[name="csrf_token"]').val()
+
+  // POST register form with csrf_token
+  await fl.http.postForm("register api", "/register", { username, password, csrf_token: csrf_token });
+```

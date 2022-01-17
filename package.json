@@ -1,6 +1,6 @@
 {
   "name": "shfzlib",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Scenario-based fuzzing test execution tool's scenario library",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

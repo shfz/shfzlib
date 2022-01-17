@@ -175,7 +175,7 @@ sh.http.options("API Name", "/path");
 
 ### Charset
 
-- `Charset.ascii()` : `!"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_\`abcdefghijklmnopqrstuvwxyz{|}~`
+- `Charset.ascii()` : `!"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_'abcdefghijklmnopqrstuvwxyz{|}~`
 - `Charset.symbol()` : `!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~`
 - `Charset.number()` : `0123456789`
 - `Charset.lowercase()` : `abcdefghijklmnopqrstuvwxyz`

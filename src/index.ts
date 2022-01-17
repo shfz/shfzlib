@@ -1,5 +1,8 @@
 import { Http } from "./lib/http";
 import { Fuzz } from "./lib/fuzz";
+import * as libchar from "./lib/char";
+
+export const Charset = libchar;
 
 // 取得したFuzzを保持してReportに使用する
 export interface FuzzText {

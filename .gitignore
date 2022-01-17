@@ -226,4 +226,5 @@ typings/
 
 dist
 examples/index.js
+examples/demo.js
 shfz

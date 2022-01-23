@@ -1,5 +1,9 @@
 # shfzlib
 
+![GitHub](https://img.shields.io/github/license/shfz/shfzlib)
+![npm](https://img.shields.io/npm/v/shfzlib)
+![npm](https://img.shields.io/npm/dm/shfzlib)
+
 Scenario-based fuzzing test execution tool's scenario library.
 
 ## Install

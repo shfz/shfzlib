@@ -9,7 +9,7 @@ const _ = lodash;
 const querystring = require("querystring");
 
 export class Http {
-  private ficliUrl: string = "";
+  private shfzUrl: string = "";
 
   private client: AxiosInstance;
 
@@ -19,12 +19,12 @@ export class Http {
 
   private isError: boolean; // reportErrorでerror()が既に呼ばれたか確認
 
-  constructor(baseURL: string, ficliUrl: string, fuzzTexts: Array<FuzzText>) {
+  constructor(baseURL: string, shfzUrl: string, fuzzTexts: Array<FuzzText>) {
     const jar = new CookieJar();
     this.client = wrapper(
       axios.create({ baseURL, jar, withCredentials: true, timeout: 2000 })
     );
-    this.ficliUrl = ficliUrl;
+    this.shfzUrl = shfzUrl;
     this.fuzzTexts = fuzzTexts;
     this.id = "";
     this.isError = false;
@@ -51,20 +51,20 @@ export class Http {
     return configFixed;
   }
 
-  // APIのパラメーターのFuzzの情報をficliに送信する setHeaderIDのあとに実行する必要がある
+  // APIのパラメーターのFuzzの情報をshfzに送信する setHeaderIDのあとに実行する必要がある
   private async reportFuzz(name: string, url: string, data?: any) {
     try {
-      const res = await axios.post(`${this.ficliUrl}/api`, {
+      const res = await axios.post(`${this.shfzUrl}/api`, {
         name,
         id: this.id,
         fuzz: Array.from(this.pickupFuzz(url, data).values()),
       });
       if (res.data.result !== "ok") {
-        console.error("[-] Failed to send api data to ficli server", res.data);
+        console.error("[-] Failed to send api data to shfz server", res.data);
         process.exit(1);
       }
     } catch (e) {
-      console.error("[-] Failed to send api data to ficli server");
+      console.error("[-] Failed to send api data to shfz server");
       process.exit(1);
     }
   }
@@ -98,16 +98,16 @@ export class Http {
     // 初回はthis.idがない状態で呼ばれるので外しておく
     if (this.id !== "") {
       try {
-        const res = await axios.post(`${this.ficliUrl}/client/${this.id}`, {
+        const res = await axios.post(`${this.shfzUrl}/client/${this.id}`, {
           isClientError: iserror,
           clientError: error,
         });
         if (res.data.result !== "ok") {
-          console.error("[-] Failed to send error data to ficli server :", error);
+          console.error("[-] Failed to send error data to shfz server :", error);
           process.exit(1);
         }
       } catch (e) {
-        console.error("[-] Failed to send error data to ficli server :", error);
+        console.error("[-] Failed to send error data to shfz server :", error);
         process.exit(1);
       }
     }

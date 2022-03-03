@@ -17,12 +17,12 @@ export class Shfzlib {
 
   private fuzzTexts: Array<FuzzText>;
 
-  constructor(appUrl: string, ficliUrl?: string) {
+  constructor(appUrl: string, shfzUrl?: string) {
     this.fuzzTexts = [];
 
 
-    const ficliUrlFixed = ficliUrl ?? "http://localhost:53653";
-    this.http = new Http(appUrl, ficliUrlFixed, this.fuzzTexts);
-    this.fuzz = new Fuzz(ficliUrlFixed, this.fuzzTexts);
+    const shfzUrlFixed = shfzUrl ?? "http://localhost:53653";
+    this.http = new Http(appUrl, shfzUrlFixed, this.fuzzTexts);
+    this.fuzz = new Fuzz(shfzUrlFixed, this.fuzzTexts);
   }
 }

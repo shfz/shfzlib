@@ -2,12 +2,12 @@ import axios from "axios";
 import { FuzzText } from "../index";
 
 export class Fuzz {
-  private ficliUrl: string = "";
+  private shfzUrl: string = "";
 
   private fuzzTexts: Array<FuzzText>;
 
-  constructor(ficliUrl: string, fuzzTexts: Array<FuzzText>) {
-    this.ficliUrl = ficliUrl;
+  constructor(shfzUrl: string, fuzzTexts: Array<FuzzText>) {
+    this.shfzUrl = shfzUrl;
     this.fuzzTexts = fuzzTexts;
   }
 
@@ -31,7 +31,7 @@ export class Fuzz {
       isGeneticFixed = isGenetic;
     }
     try {
-      const res = await axios.post(`${this.ficliUrl}/fuzz`, {
+      const res = await axios.post(`${this.shfzUrl}/fuzz`, {
         name,
         charset,
         maxLen: maxLenFixed,
@@ -39,7 +39,7 @@ export class Fuzz {
         isGenetic: isGeneticFixed,
       });
       if (res.status !== 200) {
-        console.error("[-] Failed to get fuzz from ficli server");
+        console.error("[-] Failed to get fuzz from shfz server");
         process.exit(1);
       }
       const t = res.data.fuzz;
@@ -47,7 +47,7 @@ export class Fuzz {
       this.fuzzTexts.push(fuzz);
       return t;
     } catch (error) {
-      console.error("[-] Failed to connect ficli server");
+      console.error("[-] Failed to connect shfz server");
       const len =
         Math.floor(Math.random() * (maxLenFixed - minLenFixed)) + minLenFixed;
       let text = "";
